@@ -1,6 +1,7 @@
 import React from 'react';
 import './Map.css'; 
 import * as heatmap from 'heatmap.js';
+import dataPoints from './dataPoints.js'
 
 
 class Map extends React.Component {
@@ -15,16 +16,18 @@ class Map extends React.Component {
         console.log(heatmap)
         const config = {
             container: document.getElementById('schema'), 
+            radius: 10,
             maxOpacity: 0.6, 
             minOpacity: 0
         }
-        const heatmapInstance = heatmap.create(config); 
-        let datapoint = {
-            x: 100, 
-            y: 100, 
-            value: 2
-        }; 
-        heatmapInstance.addData(datapoint)
+        const heatmapInstance = heatmap.create(config);
+        
+        const data = []
+        for (let key in dataPoints) {
+            data.push(dataPoints[key])
+        }
+        
+        heatmapInstance.addData(data)
     }
     render () {
         return (
