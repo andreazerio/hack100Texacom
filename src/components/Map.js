@@ -2,21 +2,24 @@ import React from 'react';
 import './Map.css'; 
 import * as heatmap from 'heatmap.js';
 import dataPoints from './dataPoints.js'
-import initialConfig from './initialConfig.js'
+import axios from 'axios'; 
 
 
 class Map extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            config: initialConfig,
             dataPoints: dataPoints
         }
         this.renderHeatmap = this.renderHeatmap.bind(this);
+        this.setRadii = this.setRadii.bind(this);
     }
     
     componentDidMount() {
         this.renderHeatmap();
+    }
+    componentWillMount() {
+        this.setRadii();
     }
 
     renderHeatmap() {
@@ -25,8 +28,29 @@ class Map extends React.Component {
             blur: 0.6 
         }
         const heatmapInstance = heatmap.create(config);
-        const data = [dataPoints.m4, dataPoints.m17]
+        const data = [];
+        Object.keys(this.state.dataPoints).forEach(point => {
+            data.push(this.state.dataPoints[point]);
+        })
         heatmapInstance.addData(data)
+    }
+    setRadii() {
+        axios.get('https://polar-bayou-82516.herokuapp.com/last5mins')
+            .then((data) => {
+                const newState = Object.assign({}, this.state);
+                Object.keys(data.data).forEach(sensor => {
+                    console.log(sensor);
+                    if (data[sensor.toLocaleLowerCase()] < 80) newState.dataPoints[sensor.toLocaleLowerCase()].radius = 1; 
+                    else {
+                        newState.dataPoints[sensor.toLocaleLowerCase()].radius = parseInt(data[sensor.toLocaleLowerCase()]) * 0.125;
+                    }
+                })
+                return newState
+            })
+            .then((newState) => {
+                this.setState(newState)
+            })
+            .catch(console.error)
     }
 
     render () {
