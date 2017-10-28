@@ -1,8 +1,30 @@
-import React from 'react'
-import './Map.css'
+import React from 'react';
+import './Map.css'; 
+import * as heatmap from 'heatmap.js';
+
+
 class Map extends React.Component {
     constructor(props) {
         super(props)
+        this.renderHeatmap=this.renderHeatmap.bind(this);
+    }
+    componentDidMount() {
+        this.renderHeatmap();
+    }
+    renderHeatmap() {
+        console.log(heatmap)
+        const config = {
+            container: document.getElementById('schema'), 
+            maxOpacity: 0.6, 
+            minOpacity: 0
+        }
+        const heatmapInstance = heatmap.create(config); 
+        let datapoint = {
+            x: 100, 
+            y: 100, 
+            value: 2
+        }; 
+        heatmapInstance.addData(datapoint)
     }
     render () {
         return (
@@ -11,5 +33,7 @@ class Map extends React.Component {
         )
     }
 }
+
+
 
 export default Map
