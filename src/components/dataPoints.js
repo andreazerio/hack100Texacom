@@ -3,12 +3,14 @@ const data =  {
      m4 : {
         x: 271, 
         y: 65, 
-        value: 2
+        value: 2,
+        radius: 10
     },
      m17 : {
         x: 281, 
         y: 70, 
-        value: 2
+        value: 2,
+        radius: 5
     },
      p26 : {
         x: 246, 

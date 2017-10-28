@@ -10,7 +10,7 @@ class Map extends React.Component {
         super(props)
         this.state = {
             config: initialConfig,
-            sensorPositions: dataPoints
+            dataPoints: dataPoints
         }
         this.renderHeatmap = this.renderHeatmap.bind(this);
     }
@@ -20,19 +20,12 @@ class Map extends React.Component {
     }
 
     renderHeatmap() {
-        console.log(heatmap)
         const config = {
-            container: document.getElementById('schema'), 
-            radius: 10,
-            maxOpacity: 0.6, 
-            minOpacity: 0
+            container: document.getElementById('schema'),
+            blur: 0.6 
         }
         const heatmapInstance = heatmap.create(config);
-        console.log(heatmapInstance)
-        const data = []
-        for (let key in dataPoints) {
-            data.push(dataPoints[key])
-        }
+        const data = [dataPoints.m4, dataPoints.m17]
         heatmapInstance.addData(data)
     }
 
